@@ -46,20 +46,4 @@ class Tecnico extends Model
             'disp'       => !empty($d['disponible']) ? 1 : 0,
         ]);
     }
-
-    public function disponiblesPorEspecialidad(int $especialidadId): array
-    {
-        $stmt = $this->db->prepare(
-            'SELECT * FROM tecnicos WHERE disponible = 1 AND especialidad_id = :e ORDER BY nombre_completo'
-        );
-        $stmt->execute(['e' => $especialidadId]);
-        return $stmt->fetchAll();
-    }
-
-    public function porUsuario(int $usuarioId): ?array
-    {
-        $stmt = $this->db->prepare('SELECT * FROM tecnicos WHERE usuario_id = :u LIMIT 1');
-        $stmt->execute(['u' => $usuarioId]);
-        return $stmt->fetch() ?: null;
-    }
 }
