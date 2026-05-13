@@ -15,7 +15,6 @@ DROP TABLE IF EXISTS especialidades;
 DROP TABLE IF EXISTS usuarios;
 DROP TABLE IF EXISTS gestoras;
 
-
 -- 1. USUARIOS
 CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -99,8 +98,8 @@ INSERT INTO usuarios (nombre, apellidos, email, password, rol, telefono) VALUES
 ('Lucia', 'Tecnica Dos',  'lucia@reparaya.test',   '$2y$12$Z./sS3nHOBFQFnCVzaxqEuRszsMPJ.WZkvsYaXfpVvEW8O8pd/.Fa', 'tecnico',    '600000003'),
 ('Maria', 'Cliente Uno',  'maria@cliente.test',    '$2y$12$Z./sS3nHOBFQFnCVzaxqEuRszsMPJ.WZkvsYaXfpVvEW8O8pd/.Fa', 'particular', '600000004'),
 ('Pedro', 'Cliente Dos',  'pedro@cliente.test',    '$2y$12$Z./sS3nHOBFQFnCVzaxqEuRszsMPJ.WZkvsYaXfpVvEW8O8pd/.Fa', 'particular', '600000005'),
-('Gestora', 'UNO',  'gestora@cliente.test',    '$2y$12$Z./sS3nHOBFQFnCVzaxqEuRszsMPJ.WZkvsYaXfpVvEW8O8pd/.Fa', 'gestora', '600000006'),
-('Comunidad', 'dos',  'comunidad@cliente.test',    '$2y$12$Z./sS3nHOBFQFnCVzaxqEuRszsMPJ.WZkvsYaXfpVvEW8O8pd/.Fa', 'comunidad', '600000007');
+('Gestora', 'UNO',        'gestora@cliente.test',  '$2y$12$Z./sS3nHOBFQFnCVzaxqEuRszsMPJ.WZkvsYaXfpVvEW8O8pd/.Fa', 'gestora',    '600000006'),
+('Comunidad', 'dos',      'comunidad@cliente.test','$2y$12$Z./sS3nHOBFQFnCVzaxqEuRszsMPJ.WZkvsYaXfpVvEW8O8pd/.Fa', 'comunidad',  '600000007');
 
 INSERT INTO tecnicos (usuario_id, nombre_completo, especialidad_id, disponible) VALUES
 (2, 'Carlos Tecnico Uno', 1, TRUE),
@@ -119,13 +118,12 @@ INSERT INTO incidencias (localizador, cliente_id, tecnico_id, especialidad_id, d
 ('REP-2026-0005', 4, NULL, 3, 'Cerradura principal atascada',           'C/ Mayor 12, Madrid',           '600000004', DATE_ADD(NOW(), INTERVAL 7 DAY),  'tarde',  'Estandar', 'Pendiente'),
 ('REP-2026-0006', 5, 2, 4, 'Aire acondicionado no enfria',              'Av. Diagonal 45, Barcelona',    '600000005', DATE_ADD(NOW(), INTERVAL 4 DAY),  'manana', 'Estandar', 'Asignada'),
 ('REP-2026-0007', 4, 1, 5, 'Puerta de armario descuadrada',             'C/ Mayor 12, Madrid',           '600000004', DATE_ADD(NOW(), INTERVAL 6 DAY),  'tarde',  'Estandar', 'Pendiente'),
-('REP-2026-0008', 5, 2, 1, 'Cambiar sanitarios del bano',               'Av. Diagonal 45, Barcelona',    '600000005', DATE_ADD(NOW(), INTERVAL -3 DAY), 'manana', 'Estandar', 'Finalizada'),
+('REP-2026-0008', 5, 2, 1, 'Cambiar sanitarios del bano',               'Av. Diagonal 45, Barcelona',    '600000005', DATE_SUB(NOW(), INTERVAL 3 DAY),  'manana', 'Estandar', 'Finalizada'),
 ('REP-2026-0009', 4, NULL, 2, 'Revision seguridad electrica',            'C/ Mayor 12, Madrid',           '600000004', DATE_ADD(NOW(), INTERVAL 10 DAY), 'tarde',  'Urgente',  'Pendiente'),
-('REP-2026-0010', 5, 1, 3, 'Instalar nuevas cerraduras inteligentes',   'Av. Diagonal 45, Barcelona',    '600000005', DATE_ADD(NOW(), INTERVAL -1 DAY), 'manana', 'Estandar', 'Finalizada');
-
+('REP-2026-0010', 5, 1, 3, 'Instalar nuevas cerraduras inteligentes',   'Av. Diagonal 45, Barcelona',    '600000005', DATE_SUB(NOW(), INTERVAL 1 DAY),  'manana', 'Estandar', 'Finalizada');
 
 -- Incidencia gestionada por 'Seguros HogarPlus' (gestora_id = 1)
 INSERT INTO incidencias (localizador, cliente_id, tecnico_id, especialidad_id, gestora_id, descripcion, direccion, telefono_contacto, fecha_servicio, franja_horaria, tipo_urgencia, estado) VALUES
 ('REP-2026-0011', 4, NULL, 1, 1, 'Inundación por rotura de bajante principal', 'C/ Mayor 12, Madrid', '600000004', DATE_ADD(NOW(), INTERVAL 1 DAY), 'manana', 'Urgente', 'Pendiente');
--- Nota: como los hashes incluidos ahora son válidos, el sistema funciona de inmediato
--- Si necesitas regenerarlos, ejecuta: php sql/seed_passwords.php
+
+-- Nota: los hashes incluidos son válidos para la contraseña "reparaya123"
