@@ -23,7 +23,7 @@ CREATE TABLE usuarios (
     apellidos VARCHAR(150) DEFAULT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL, -- password_hash() de PHP
-    rol ENUM('admin', 'tecnico', 'particular') NOT NULL DEFAULT 'particular',
+    rol ENUM('admin', 'tecnico', 'particular', 'gestora', 'comunidad') NOT NULL DEFAULT 'particular',
     telefono VARCHAR(20),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -98,7 +98,9 @@ INSERT INTO usuarios (nombre, apellidos, email, password, rol, telefono) VALUES
 ('Carlos','Tecnico Uno',  'carlos@reparaya.test',  '$2y$12$Z./sS3nHOBFQFnCVzaxqEuRszsMPJ.WZkvsYaXfpVvEW8O8pd/.Fa', 'tecnico',    '600000002'),
 ('Lucia', 'Tecnica Dos',  'lucia@reparaya.test',   '$2y$12$Z./sS3nHOBFQFnCVzaxqEuRszsMPJ.WZkvsYaXfpVvEW8O8pd/.Fa', 'tecnico',    '600000003'),
 ('Maria', 'Cliente Uno',  'maria@cliente.test',    '$2y$12$Z./sS3nHOBFQFnCVzaxqEuRszsMPJ.WZkvsYaXfpVvEW8O8pd/.Fa', 'particular', '600000004'),
-('Pedro', 'Cliente Dos',  'pedro@cliente.test',    '$2y$12$Z./sS3nHOBFQFnCVzaxqEuRszsMPJ.WZkvsYaXfpVvEW8O8pd/.Fa', 'particular', '600000005');
+('Pedro', 'Cliente Dos',  'pedro@cliente.test',    '$2y$12$Z./sS3nHOBFQFnCVzaxqEuRszsMPJ.WZkvsYaXfpVvEW8O8pd/.Fa', 'particular', '600000005'),
+('Gestora', 'UNO',  'gestora@cliente.test',    '$2y$12$Z./sS3nHOBFQFnCVzaxqEuRszsMPJ.WZkvsYaXfpVvEW8O8pd/.Fa', 'gestora', '600000006'),
+('Comunidad', 'dos',  'comunidad@cliente.test',    '$2y$12$Z./sS3nHOBFQFnCVzaxqEuRszsMPJ.WZkvsYaXfpVvEW8O8pd/.Fa', 'comunidad', '600000007');
 
 INSERT INTO tecnicos (usuario_id, nombre_completo, especialidad_id, disponible) VALUES
 (2, 'Carlos Tecnico Uno', 1, TRUE),

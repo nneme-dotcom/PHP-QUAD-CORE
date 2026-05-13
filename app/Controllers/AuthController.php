@@ -87,6 +87,8 @@ class AuthController extends Controller
         switch ($rol) {
             case 'admin':      $this->redirect('/admin'); break;
             case 'tecnico':    $this->redirect('/tecnico'); break;
+            case 'gestora':    $this->redirect('/gestora'); break;
+            case 'comunidad':  $this->redirect('/comunidad'); break;
             default:           $this->redirect('/cliente');
         }
     }

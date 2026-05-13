@@ -81,4 +81,7 @@ $router->get('/admin/usuarios/editar',  [App\Controllers\UsuariosController::cla
 $router->post('/admin/usuarios/editar', [App\Controllers\UsuariosController::class, 'update']);
 $router->post('/admin/usuarios/borrar', [App\Controllers\UsuariosController::class, 'destroy']);
 
+$router->get('/api/servicios/zonas',         [App\Controllers\ApiController::class, 'serviciosZonas']);
+
 $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
+
