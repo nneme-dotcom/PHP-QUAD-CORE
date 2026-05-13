@@ -2,31 +2,41 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Attributes\Hidden;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
 
-#[Fillable(['name', 'email', 'password'])]
-#[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable
+class User extends Model
 {
-    /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    protected $table = 'usuarios';
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    protected $fillable = [
+        'nombre',
+        'apellidos',
+        'email',
+        'password',
+        'rol',
+        'telefono',
+    ];
+
+    protected $hidden = [
+        'password',
+    ];
+
+    public $timestamps = false;
+
+    // Relaciones
+    public function tecnico()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasOne(Tecnico::class, 'usuario_id');
+    }
+
+    public function incidencias()
+    {
+        return $this->hasMany(Incidencia::class, 'cliente_id');
+    }
+
+    public function empresaGestora()
+    {
+        return $this->hasOne(EmpresaGestora::class, 'usuario_id');
     }
 }

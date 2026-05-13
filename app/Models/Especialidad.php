@@ -1,22 +1,27 @@
 <?php
+
 namespace App\Models;
 
-use App\Core\Model;
+use Illuminate\Database\Eloquent\Model;
 
 class Especialidad extends Model
 {
-    protected string $table = 'especialidades';
+    protected $table = 'especialidades';
 
-    public function create(string $nombre): int
+    protected $fillable = [
+        'nombre_especialidad',
+    ];
+
+    public $timestamps = false;
+
+    // Relaciones
+    public function tecnicos()
     {
-        $stmt = $this->db->prepare('INSERT INTO especialidades (nombre_especialidad) VALUES (:n)');
-        $stmt->execute(['n' => $nombre]);
-        return (int)$this->db->lastInsertId();
+        return $this->hasMany(Tecnico::class, 'especialidad_id');
     }
 
-    public function update(int $id, string $nombre): bool
+    public function incidencias()
     {
-        $stmt = $this->db->prepare('UPDATE especialidades SET nombre_especialidad = :n WHERE id = :id');
-        return $stmt->execute(['id' => $id, 'n' => $nombre]);
+        return $this->hasMany(Incidencia::class, 'especialidad_id');
     }
 }

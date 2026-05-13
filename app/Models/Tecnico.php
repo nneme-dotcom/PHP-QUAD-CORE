@@ -1,49 +1,35 @@
 <?php
+
 namespace App\Models;
 
-use App\Core\Model;
+use Illuminate\Database\Eloquent\Model;
 
 class Tecnico extends Model
 {
-    protected string $table = 'tecnicos';
+    protected $table = 'tecnicos';
 
-    public function allWithDetails(): array
+    protected $fillable = [
+        'usuario_id',
+        'nombre_completo',
+        'especialidad_id',
+        'disponible',
+    ];
+
+    public $timestamps = false;
+
+    // Relaciones
+    public function usuario()
     {
-        $sql = 'SELECT t.*, e.nombre_especialidad, u.email
-                FROM tecnicos t
-                LEFT JOIN especialidades e ON e.id = t.especialidad_id
-                LEFT JOIN usuarios u       ON u.id = t.usuario_id
-                ORDER BY t.id DESC';
-        return $this->db->query($sql)->fetchAll();
+        return $this->belongsTo(User::class, 'usuario_id');
     }
 
-    public function create(array $d): int
+    public function especialidad()
     {
-        $stmt = $this->db->prepare(
-            'INSERT INTO tecnicos (usuario_id, nombre_completo, especialidad_id, disponible)
-             VALUES (:usuario_id, :nombre, :esp, :disp)'
-        );
-        $stmt->execute([
-            'usuario_id' => $d['usuario_id'] ?: null,
-            'nombre'     => $d['nombre_completo'],
-            'esp'        => $d['especialidad_id'],
-            'disp'       => !empty($d['disponible']) ? 1 : 0,
-        ]);
-        return (int)$this->db->lastInsertId();
+        return $this->belongsTo(Especialidad::class, 'especialidad_id');
     }
 
-    public function update(int $id, array $d): bool
+    public function incidencias()
     {
-        $stmt = $this->db->prepare(
-            'UPDATE tecnicos SET usuario_id = :usuario_id, nombre_completo = :nombre,
-             especialidad_id = :esp, disponible = :disp WHERE id = :id'
-        );
-        return $stmt->execute([
-            'id'         => $id,
-            'usuario_id' => $d['usuario_id'] ?: null,
-            'nombre'     => $d['nombre_completo'],
-            'esp'        => $d['especialidad_id'],
-            'disp'       => !empty($d['disponible']) ? 1 : 0,
-        ]);
+        return $this->hasMany(Incidencia::class, 'tecnico_id');
     }
 }
