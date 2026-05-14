@@ -18,15 +18,7 @@
             justify-content: center;
         }
         .login-wrap { width: 100%; max-width: 400px; padding: 1rem; }
-        .brand-icon {
-            width: 52px; height: 52px;
-            background: #e74c3c;
-            border-radius: 14px;
-            display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 1rem;
-        }
-        .brand-icon i { color: #fff; font-size: 1.4rem; }
-        .form-control, .form-select {
+.form-control, .form-select {
             border-color: #e2e5e9;
             border-radius: 8px;
             font-size: .9rem;
@@ -48,9 +40,8 @@
 <div class="login-wrap">
     <div class="card shadow-sm p-4">
         <div class="text-center mb-4">
-            <div class="brand-icon"><i class="bi bi-tools"></i></div>
-            <h5 class="fw-600 mb-0" style="color:#1a1d23">ReparaYa</h5>
-            <small class="text-muted">Accede a tu panel de gestión</small>
+            <img src="{{ asset('logo.png') }}" alt="ReparaYa" style="max-width:140px;width:100%;height:auto;margin-bottom:.5rem;">
+            <small class="text-muted d-block">Accede a tu panel de gestión</small>
         </div>
 
         @if($errors->any())

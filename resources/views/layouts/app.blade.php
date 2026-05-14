@@ -109,8 +109,8 @@
                 aria-controls="sidebarOffcanvas">
             <i class="bi bi-list"></i>
         </button>
-        <a class="navbar-brand" href="{{ route('dashboard') }}">
-            <i class="bi bi-tools"></i> ReparaYa
+        <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('dashboard') }}">
+            <img src="{{ asset('logo.png') }}" alt="ReparaYa" style="height:32px;width:auto;">
         </a>
         <div class="ms-auto d-flex align-items-center gap-3">
             <span class="text-muted small d-none d-sm-inline">
@@ -130,7 +130,7 @@
 {{-- Offcanvas sidebar para móvil --}}
 <div class="offcanvas offcanvas-start offcanvas-sidebar" tabindex="-1" id="sidebarOffcanvas" style="max-width:260px">
     <div class="offcanvas-header border-bottom">
-        <span class="navbar-brand mb-0"><i class="bi bi-tools"></i> ReparaYa</span>
+        <img src="{{ asset('logo.png') }}" alt="ReparaYa" style="height:36px;width:auto;">
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
     </div>
     <div class="offcanvas-body p-2">
@@ -143,6 +143,9 @@
 
         {{-- Sidebar desktop (oculto en móvil) --}}
         <nav class="col-md-2 sidebar py-3 d-none d-md-block">
+            <div class="text-center py-2 px-3 mb-1">
+                <img src="{{ asset('logo.png') }}" alt="ReparaYa" style="max-width:120px;width:100%;height:auto;">
+            </div>
             @include('partials.sidebar_nav')
         </nav>
 
