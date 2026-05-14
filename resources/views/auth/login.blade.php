@@ -40,7 +40,7 @@
 <div class="login-wrap">
     <div class="card shadow-sm p-4">
         <div class="text-center mb-4">
-            <img src="{{ asset('logo.png') }}" alt="ReparaYa" style="max-width:260px;width:100%;height:auto;margin-bottom:.5rem;">
+            <img src="{{ asset('logo.png') }}" alt="ReparaYa" style="max-width:340px;width:100%;height:auto;margin-bottom:.5rem;">
             <small class="text-muted d-block">Accede a tu panel de gestión</small>
         </div>
 
