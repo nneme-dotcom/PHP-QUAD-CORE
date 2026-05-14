@@ -141,8 +141,8 @@
 
         {{-- Sidebar desktop (oculto en móvil) --}}
         <nav class="col-md-2 sidebar py-3 d-none d-md-block">
-            <div class="text-center py-2 px-3 mb-1">
-                <img src="{{ asset('logo.png') }}" alt="ReparaYa" style="max-width:260px;width:100%;height:auto;">
+            <div class="text-center py-3 px-2 mb-1">
+                <img src="{{ asset('logo.png') }}" alt="ReparaYa" style="width:100%;height:auto;display:block;">
             </div>
             @include('partials.sidebar_nav')
         </nav>
