@@ -1,41 +1,64 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\UsuarioController;
 use App\Http\Controllers\Admin\TecnicoController;
 use App\Http\Controllers\Admin\EspecialidadController;
-use App\Http\Controllers\Admin\GestoraController;
+use App\Http\Controllers\Admin\IncidenciaAdminController;
+use App\Http\Controllers\Admin\GestoraAdminController;
 use App\Http\Controllers\Admin\LiquidacionController;
-use App\Http\Controllers\Admin\IncidenciaController as AdminIncidencia;
-use App\Http\Controllers\Tecnico\IncidenciaController as TecnicoIncidencia;
-use App\Http\Controllers\Cliente\IncidenciaController as ClienteIncidencia;
+use App\Http\Controllers\Cliente\IncidenciaClienteController;
+use App\Http\Controllers\Tecnico\IncidenciaTecnicoController;
+use App\Http\Controllers\Gestora\IncidenciaGestoraController;
+use App\Http\Controllers\Gestora\ComisionController;
 
-// Ruta raíz (Redirige al login o dashboard)
-Route::get('/', function () {
-    return redirect()->route('dashboard');
+// Raíz -> login
+Route::get('/', fn() => redirect()->route('login'));
+
+// Auth
+Route::get('/login',  [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Dashboard (todos los roles autenticados)
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware('role')
+    ->name('dashboard');
+
+// ── ADMIN ──────────────────────────────────────────────────────────────────
+Route::prefix('admin')->name('admin.')->middleware('role:admin')->group(function () {
+
+    Route::resource('usuarios',       UsuarioController::class);
+    Route::resource('tecnicos',       TecnicoController::class);
+    Route::resource('especialidades', EspecialidadController::class);
+    Route::resource('incidencias',    IncidenciaAdminController::class);
+
+    Route::post('incidencias/{incidencia}/asignar', [IncidenciaAdminController::class, 'asignar'])->name('incidencias.asignar');
+    Route::post('incidencias/{incidencia}/estado',  [IncidenciaAdminController::class, 'estado'])->name('incidencias.estado');
+
+    Route::resource('gestoras', GestoraAdminController::class);
+    Route::get('liquidaciones', [LiquidacionController::class, 'index'])->name('liquidaciones.index');
 });
 
-// RUTAS ABIERTAS PARA EL VÍDEO (Sin candados de "role")
-Route::middleware(['auth'])->group(function () {
-    
-    // Dashboard
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-    // --- SECCIÓN ADMINISTRACIÓN (Tu Producto 3) ---
-    Route::resource('admin/usuarios', UserController::class)->names('admin.usuarios');
-    Route::resource('admin/tecnicos', TecnicoController::class)->names('admin.tecnicos');
-    Route::resource('admin/especialidades', EspecialidadController::class)->names('admin.especialidades');
-    Route::resource('admin/gestoras', GestoraController::class)->names('admin.gestoras');
-    Route::resource('admin/liquidaciones', LiquidacionController::class)->names('admin.liquidaciones');
-    Route::resource('admin/incidencias', AdminIncidencia::class)->names('admin.incidencias');
-
-    // --- SECCIÓN TÉCNICOS ---
-    Route::resource('tecnico/incidencias', TecnicoIncidencia::class)->names('tecnico.incidencias');
-
-    // --- SECCIÓN CLIENTES ---
-    Route::resource('cliente/incidencias', ClienteIncidencia::class)->names('cliente.incidencias');
+// ── CLIENTE ────────────────────────────────────────────────────────────────
+Route::prefix('cliente')->name('cliente.')->middleware('role:particular')->group(function () {
+    Route::resource('incidencias', IncidenciaClienteController::class)
+         ->only(['index', 'create', 'store', 'show']);
 });
 
-// Rutas de autenticación (Login/Logout que ya vienen con Laravel)
-require __DIR__.'/auth.php';
+// ── TÉCNICO ────────────────────────────────────────────────────────────────
+Route::prefix('tecnico')->name('tecnico.')->middleware('role:tecnico')->group(function () {
+    Route::resource('incidencias', IncidenciaTecnicoController::class)
+         ->only(['index', 'show']);
+    Route::post('incidencias/{incidencia}/estado', [IncidenciaTecnicoController::class, 'estado'])
+         ->name('incidencias.estado');
+});
+
+// ── GESTORA ────────────────────────────────────────────────────────────────
+Route::prefix('gestora')->name('gestora.')->middleware('role:gestora')->group(function () {
+    Route::resource('incidencias', IncidenciaGestoraController::class)
+         ->only(['index', 'create', 'store', 'show']);
+    Route::get('comisiones', [ComisionController::class, 'index'])->name('comisiones.index');
+});

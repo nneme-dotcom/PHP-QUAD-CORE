@@ -29,13 +29,7 @@
                 <dt class="col-5">Urgencia</dt>
                 <dd class="col-7">{{ $incidencia->tipo_urgencia }}</dd>
                 <dt class="col-5">Estado</dt>
-                <dd class="col-7">
-                    <span class="badge bg-{{
-                        $incidencia->estado === 'Pendiente'  ? 'warning text-dark' :
-                        ($incidencia->estado === 'Asignada'  ? 'primary' :
-                        ($incidencia->estado === 'Finalizada'? 'success' : 'secondary'))
-                    }}">{{ $incidencia->estado }}</span>
-                </dd>
+                <dd class="col-7">@include('partials.badge_estado', ['estado' => $incidencia->estado])</dd>
                 <dt class="col-5">Descripción</dt>
                 <dd class="col-7">{{ $incidencia->descripcion }}</dd>
             </dl>

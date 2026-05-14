@@ -16,13 +16,7 @@
                 <td>{{ $i->cliente->nombre ?? '—' }}</td>
                 <td>{{ $i->especialidad->nombre_especialidad ?? '—' }}</td>
                 <td>{{ \Carbon\Carbon::parse($i->fecha_servicio)->format('d/m/Y') }}</td>
-                <td>
-                    <span class="badge bg-{{
-                        $i->estado === 'Pendiente'  ? 'warning text-dark' :
-                        ($i->estado === 'Asignada'  ? 'primary' :
-                        ($i->estado === 'Finalizada'? 'success' : 'secondary'))
-                    }}">{{ $i->estado }}</span>
-                </td>
+                <td>@include('partials.badge_estado', ['estado' => $i->estado])</td>
                 <td>
                     <a href="{{ route('admin.incidencias.show', $i) }}" class="btn btn-sm btn-outline-secondary">
                         <i class="bi bi-eye"></i>
