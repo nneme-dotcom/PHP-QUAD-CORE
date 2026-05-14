@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Hash;
 
 class User extends Model
 {
@@ -24,7 +23,6 @@ class User extends Model
 
     public $timestamps = false;
 
-    // Relaciones
     public function tecnico()
     {
         return $this->hasOne(Tecnico::class, 'usuario_id');

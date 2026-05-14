@@ -8,13 +8,10 @@ class Especialidad extends Model
 {
     protected $table = 'especialidades';
 
-    protected $fillable = [
-        'nombre_especialidad',
-    ];
+    protected $fillable = ['nombre_especialidad'];
 
     public $timestamps = false;
 
-    // Relaciones
     public function tecnicos()
     {
         return $this->hasMany(Tecnico::class, 'especialidad_id');

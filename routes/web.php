@@ -35,12 +35,11 @@ Route::prefix('admin')->name('admin.')->middleware('role:admin')->group(function
     Route::resource('especialidades', EspecialidadController::class);
     Route::resource('incidencias',   IncidenciaAdminController::class);
 
-    // Acciones extra sobre incidencias
     Route::post('incidencias/{incidencia}/asignar',  [IncidenciaAdminController::class, 'asignar'])->name('incidencias.asignar');
     Route::post('incidencias/{incidencia}/estado',   [IncidenciaAdminController::class, 'estado'])->name('incidencias.estado');
 
     Route::resource('gestoras', GestoraAdminController::class);
-    Route::get('liquidaciones',      [LiquidacionController::class, 'index'])->name('liquidaciones.index');
+    Route::get('liquidaciones', [LiquidacionController::class, 'index'])->name('liquidaciones.index');
 });
 
 // ── CLIENTE ────────────────────────────────────────────────────────────────

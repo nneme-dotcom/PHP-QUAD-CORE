@@ -17,7 +17,6 @@ class Tecnico extends Model
 
     public $timestamps = false;
 
-    // Relaciones
     public function usuario()
     {
         return $this->belongsTo(User::class, 'usuario_id');
