@@ -10,6 +10,12 @@ DROP TABLE IF EXISTS usuarios;
 DROP TABLE IF EXISTS gestoras;
 DROP TABLE IF EXISTS zonas;
 
+CREATE TABLE zonas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -52,6 +58,7 @@ CREATE TABLE incidencias (
     tecnico_id INT DEFAULT NULL,
     especialidad_id INT NOT NULL,
     gestora_id INT DEFAULT NULL,
+    zona_id INT DEFAULT NULL,
     descripcion TEXT NOT NULL,
     direccion VARCHAR(255) NOT NULL,
     telefono_contacto VARCHAR(20) NOT NULL,
@@ -66,7 +73,8 @@ CREATE TABLE incidencias (
     FOREIGN KEY (cliente_id) REFERENCES usuarios(id),
     FOREIGN KEY (tecnico_id) REFERENCES tecnicos(id) ON DELETE SET NULL,
     FOREIGN KEY (especialidad_id) REFERENCES especialidades(id),
-    FOREIGN KEY (gestora_id) REFERENCES gestoras(id) ON DELETE SET NULL
+    FOREIGN KEY (gestora_id) REFERENCES gestoras(id) ON DELETE SET NULL,
+    FOREIGN KEY (zona_id) REFERENCES zonas(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Datos de prueba
