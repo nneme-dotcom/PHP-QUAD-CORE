@@ -31,7 +31,7 @@
     <div class="col-md-5">
         <div class="card border-0 shadow-sm p-3">
             <h6 class="text-muted mb-3">Actualizar estado</h6>
-            <p>Estado actual: <span class="badge bg-primary">{{ $incidencia->estado }}</span></p>
+            <p class="mb-2">Estado actual: @include('partials.badge_estado', ['estado' => $incidencia->estado])</p>
             <form method="POST" action="{{ route('tecnico.incidencias.estado', $incidencia) }}">
                 @csrf
                 <div class="input-group">
