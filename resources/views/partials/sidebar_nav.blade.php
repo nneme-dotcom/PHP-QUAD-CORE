@@ -6,7 +6,8 @@
         </a>
     </li>
 
-    {{-- Sección de Administración (Ahora visible para todos para el vídeo) --}}
+    {{-- Sección de Administración --}}
+    @if(session('user_rol') === 'admin')
     <li class="sidebar-section mt-2">Administración</li>
     <li class="nav-item">
         <a class="nav-link {{ request()->routeIs('admin.usuarios.*') ? 'active' : '' }}" href="{{ route('admin.usuarios.index') }}">
@@ -41,17 +42,41 @@
         </a>
     </li>
 
-    {{-- Secciones de Cliente/Gestora --}}
-    <li class="sidebar-section mt-2">Accesos Directos</li>
+    @endif
+
+    {{-- Sección Cliente --}}
+    @if(session('user_rol') === 'particular')
+    <li class="sidebar-section mt-2">Mis Servicios</li>
     <li class="nav-item">
-        <a class="nav-link" href="{{ route('cliente.incidencias.index') }}">
-            <i class="bi bi-clipboard-plus"></i> Mis Avisos (Cliente)
+        <a class="nav-link {{ request()->routeIs('cliente.incidencias.*') ? 'active' : '' }}" href="{{ route('cliente.incidencias.index') }}">
+            <i class="bi bi-clipboard-plus"></i> Mis Avisos
+        </a>
+    </li>
+    @endif
+
+    {{-- Sección Gestora --}}
+    @if(session('user_rol') === 'gestora')
+    <li class="sidebar-section mt-2">Mi Panel</li>
+    <li class="nav-item">
+        <a class="nav-link {{ request()->routeIs('gestora.incidencias.*') ? 'active' : '' }}" href="{{ route('gestora.incidencias.index') }}">
+            <i class="bi bi-clipboard-check"></i> Mis Avisos
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{{ route('gestora.comisiones.index') }}">
-            <i class="bi bi-briefcase"></i> Mis Comisiones (Gestora)
+        <a class="nav-link {{ request()->routeIs('gestora.comisiones.*') ? 'active' : '' }}" href="{{ route('gestora.comisiones.index') }}">
+            <i class="bi bi-briefcase"></i> Mis Comisiones
         </a>
     </li>
+    @endif
+
+    {{-- Sección Técnico --}}
+    @if(session('user_rol') === 'tecnico')
+    <li class="sidebar-section mt-2">Mis Servicios</li>
+    <li class="nav-item">
+        <a class="nav-link {{ request()->routeIs('tecnico.incidencias.*') ? 'active' : '' }}" href="{{ route('tecnico.incidencias.index') }}">
+            <i class="bi bi-tools"></i> Mis Incidencias
+        </a>
+    </li>
+    @endif
 
 </ul>
