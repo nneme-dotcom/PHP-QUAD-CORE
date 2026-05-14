@@ -110,7 +110,7 @@
             <i class="bi bi-list"></i>
         </button>
         <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('dashboard') }}">
-            <img src="{{ asset('logo.png') }}" alt="ReparaYa" style="height:32px;width:auto;">
+            <i class="bi bi-tools"></i> ReparaYa
         </a>
         <div class="ms-auto d-flex align-items-center gap-3">
             <span class="text-muted small d-none d-sm-inline">
@@ -144,7 +144,7 @@
         {{-- Sidebar desktop (oculto en móvil) --}}
         <nav class="col-md-2 sidebar py-3 d-none d-md-block">
             <div class="text-center py-2 px-3 mb-1">
-                <img src="{{ asset('logo.png') }}" alt="ReparaYa" style="max-width:120px;width:100%;height:auto;">
+                <img src="{{ asset('logo.png') }}" alt="ReparaYa" style="max-width:200px;width:100%;height:auto;">
             </div>
             @include('partials.sidebar_nav')
         </nav>
