@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS tecnicos;
 DROP TABLE IF EXISTS especialidades;
 DROP TABLE IF EXISTS usuarios;
 DROP TABLE IF EXISTS gestoras;
+DROP TABLE IF EXISTS zonas;
 
 CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -111,3 +112,16 @@ INSERT INTO incidencias (localizador, cliente_id, tecnico_id, especialidad_id, d
 -- Incidencia de gestora
 INSERT INTO incidencias (localizador, cliente_id, tecnico_id, especialidad_id, gestora_id, descripcion, direccion, telefono_contacto, fecha_servicio, franja_horaria, tipo_urgencia, estado) VALUES
 ('REP-2026-0011', 4, NULL, 1, 1, 'Inundación por rotura de bajante principal', 'C/ Mayor 12, Madrid', '600000004', DATE_ADD(NOW(), INTERVAL 1 DAY), 'manana', 'Urgente', 'Pendiente');
+
+-- Zonas (tabla para API REST - producto 3)
+INSERT INTO zonas (nombre) VALUES
+('Centro'),
+('Eixample'),
+('Gracia'),
+('Sant Marti'),
+('Horta');
+
+-- Asignar zona a algunas incidencias de ejemplo
+UPDATE incidencias SET zona_id = 1 WHERE id IN (1, 5, 7, 9, 11);
+UPDATE incidencias SET zona_id = 2 WHERE id IN (2, 4, 6, 8, 10);
+UPDATE incidencias SET zona_id = 3 WHERE id IN (3);

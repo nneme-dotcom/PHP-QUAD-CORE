@@ -14,51 +14,55 @@ use App\Http\Controllers\Tecnico\IncidenciaTecnicoController;
 use App\Http\Controllers\Gestora\IncidenciaGestoraController;
 use App\Http\Controllers\Gestora\ComisionController;
 
-// Raíz -> login
-Route::get('/', fn() => redirect()->route('login'));
+Route::prefix('producto3')->group(function () {
 
-// Auth
-Route::get('/login',  [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    // Raíz -> login
+    Route::get('/', fn() => redirect()->route('login'));
 
-// Dashboard (todos los roles autenticados)
-Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware('role')
-    ->name('dashboard');
+    // Auth
+    Route::get('/login',  [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// ── ADMIN ──────────────────────────────────────────────────────────────────
-Route::prefix('admin')->name('admin.')->middleware('role:admin')->group(function () {
+    // Dashboard (todos los roles autenticados)
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->middleware('role')
+        ->name('dashboard');
 
-    Route::resource('usuarios',      UsuarioController::class);
-    Route::resource('tecnicos',      TecnicoController::class);
-    Route::resource('especialidades', EspecialidadController::class);
-    Route::resource('incidencias',   IncidenciaAdminController::class);
+    // ── ADMIN ──────────────────────────────────────────────────────────────────
+    Route::prefix('admin')->name('admin.')->middleware('role:admin')->group(function () {
 
-    Route::post('incidencias/{incidencia}/asignar',  [IncidenciaAdminController::class, 'asignar'])->name('incidencias.asignar');
-    Route::post('incidencias/{incidencia}/estado',   [IncidenciaAdminController::class, 'estado'])->name('incidencias.estado');
+        Route::resource('usuarios',       UsuarioController::class);
+        Route::resource('tecnicos',       TecnicoController::class);
+        Route::resource('especialidades', EspecialidadController::class);
+        Route::resource('incidencias',    IncidenciaAdminController::class);
 
-    Route::resource('gestoras', GestoraAdminController::class);
-    Route::get('liquidaciones', [LiquidacionController::class, 'index'])->name('liquidaciones.index');
-});
+        Route::post('incidencias/{incidencia}/asignar', [IncidenciaAdminController::class, 'asignar'])->name('incidencias.asignar');
+        Route::post('incidencias/{incidencia}/estado',  [IncidenciaAdminController::class, 'estado'])->name('incidencias.estado');
 
-// ── CLIENTE ────────────────────────────────────────────────────────────────
-Route::prefix('cliente')->name('cliente.')->middleware('role:particular')->group(function () {
-    Route::resource('incidencias', IncidenciaClienteController::class)
-         ->only(['index', 'create', 'store', 'show']);
-});
+        Route::resource('gestoras', GestoraAdminController::class);
+        Route::get('liquidaciones', [LiquidacionController::class, 'index'])->name('liquidaciones.index');
+    });
 
-// ── TÉCNICO ────────────────────────────────────────────────────────────────
-Route::prefix('tecnico')->name('tecnico.')->middleware('role:tecnico')->group(function () {
-    Route::resource('incidencias', IncidenciaTecnicoController::class)
-         ->only(['index', 'show']);
-    Route::post('incidencias/{incidencia}/estado', [IncidenciaTecnicoController::class, 'estado'])
-         ->name('incidencias.estado');
-});
+    // ── CLIENTE ────────────────────────────────────────────────────────────────
+    Route::prefix('cliente')->name('cliente.')->middleware('role:particular')->group(function () {
+        Route::resource('incidencias', IncidenciaClienteController::class)
+             ->only(['index', 'create', 'store', 'show']);
+    });
 
-// ── GESTORA ────────────────────────────────────────────────────────────────
-Route::prefix('gestora')->name('gestora.')->middleware('role:gestora')->group(function () {
-    Route::resource('incidencias', IncidenciaGestoraController::class)
-         ->only(['index', 'create', 'store', 'show']);
-    Route::get('comisiones', [ComisionController::class, 'index'])->name('comisiones.index');
+    // ── TÉCNICO ────────────────────────────────────────────────────────────────
+    Route::prefix('tecnico')->name('tecnico.')->middleware('role:tecnico')->group(function () {
+        Route::resource('incidencias', IncidenciaTecnicoController::class)
+             ->only(['index', 'show']);
+        Route::post('incidencias/{incidencia}/estado', [IncidenciaTecnicoController::class, 'estado'])
+             ->name('incidencias.estado');
+    });
+
+    // ── GESTORA ────────────────────────────────────────────────────────────────
+    Route::prefix('gestora')->name('gestora.')->middleware('role:gestora')->group(function () {
+        Route::resource('incidencias', IncidenciaGestoraController::class)
+             ->only(['index', 'create', 'store', 'show']);
+        Route::get('comisiones', [ComisionController::class, 'index'])->name('comisiones.index');
+    });
+
 });

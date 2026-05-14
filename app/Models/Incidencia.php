@@ -21,6 +21,7 @@ class Incidencia extends Model
         'tipo_urgencia',
         'estado',
         'gestora_id',
+        'zona_id',
     ];
 
     protected $casts = [
@@ -50,6 +51,11 @@ class Incidencia extends Model
     public function comision()
     {
         return $this->hasOne(Comision::class, 'incidencia_id');
+    }
+
+    public function zona()
+    {
+        return $this->belongsTo(Zona::class, 'zona_id');
     }
 
     public static function generarLocalizador(): string
