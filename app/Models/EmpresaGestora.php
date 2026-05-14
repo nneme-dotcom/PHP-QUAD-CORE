@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class EmpresaGestora extends Model
 {
-    protected $table = 'empresas_gestoras';
+    protected $table = 'gestoras';
 
     protected $fillable = [
         'nombre',
