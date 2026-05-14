@@ -21,7 +21,10 @@ return new class extends Migration
             $table->enum('franja_horaria', ['manana', 'tarde']);
             $table->enum('tipo_urgencia', ['Estandar', 'Urgente'])->default('Estandar');
             $table->enum('estado', ['Pendiente', 'Asignada', 'Finalizada', 'Cancelada'])->default('Pendiente');
-            $table->foreignId('gestora_id')->nullable()->constrained('empresas_gestoras')->nullOnDelete();
+            
+            // Línea modificada para evitar el error de orden de tablas
+            $table->unsignedBigInteger('gestora_id')->nullable(); 
+            
             $table->timestamp('created_at')->nullable()->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrent();
         });
