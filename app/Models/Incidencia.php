@@ -27,7 +27,6 @@ class Incidencia extends Model
         'fecha_servicio' => 'datetime',
     ];
 
-    // Relaciones
     public function cliente()
     {
         return $this->belongsTo(User::class, 'cliente_id');
@@ -53,7 +52,6 @@ class Incidencia extends Model
         return $this->hasOne(Comision::class, 'incidencia_id');
     }
 
-    /** Genera localizador único tipo REP-2026-XXXX */
     public static function generarLocalizador(): string
     {
         do {

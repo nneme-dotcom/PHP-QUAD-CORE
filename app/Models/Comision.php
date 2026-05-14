@@ -18,7 +18,6 @@ class Comision extends Model
         'anio',
     ];
 
-    // Relaciones
     public function gestora()
     {
         return $this->belongsTo(EmpresaGestora::class, 'gestora_id');

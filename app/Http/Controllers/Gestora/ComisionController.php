@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Gestora;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Concerns\AgrupaComisionesPorMes;
 use App\Models\EmpresaGestora;
 use App\Models\Comision;
 
 class ComisionController extends Controller
 {
+    use AgrupaComisionesPorMes;
+
     public function index()
     {
         $gestora = EmpresaGestora::where('usuario_id', session('user_id'))->firstOrFail();
@@ -18,17 +21,7 @@ class ComisionController extends Controller
             ->orderBy('mes', 'desc')
             ->get();
 
-        // Agrupar por mes/año
-        $porMes = $comisiones->groupBy(fn($c) => $c->anio . '-' . str_pad($c->mes, 2, '0', STR_PAD_LEFT));
-
-        $resumen = $porMes->map(fn($grupo) => [
-            'mes'      => $grupo->first()->mes,
-            'anio'     => $grupo->first()->anio,
-            'total'    => $grupo->sum('importe_comision'),
-            'servicios'=> $grupo->count(),
-            'detalle'  => $grupo,
-        ]);
-
+        $resumen        = $this->agruparPorMes($comisiones);
         $totalAcumulado = $comisiones->sum('importe_comision');
 
         return view('gestora.comisiones.index', compact('gestora', 'resumen', 'totalAcumulado'));

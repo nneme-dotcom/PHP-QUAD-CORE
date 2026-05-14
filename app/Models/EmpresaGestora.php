@@ -17,7 +17,6 @@ class EmpresaGestora extends Model
         'usuario_id',
     ];
 
-    // Relaciones
     public function usuario()
     {
         return $this->belongsTo(User::class, 'usuario_id');

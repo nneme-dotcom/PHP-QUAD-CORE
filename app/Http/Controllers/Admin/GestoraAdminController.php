@@ -32,7 +32,6 @@ class GestoraAdminController extends Controller
             'password'            => 'required|min:6',
         ]);
 
-        // Crear usuario con rol gestora
         $user = User::create([
             'nombre'   => $request->nombre,
             'email'    => $request->email,
@@ -41,7 +40,6 @@ class GestoraAdminController extends Controller
             'telefono' => $request->telefono,
         ]);
 
-        // Crear empresa gestora vinculada al usuario
         EmpresaGestora::create([
             'nombre'              => $request->nombre,
             'cif'                 => $request->cif,

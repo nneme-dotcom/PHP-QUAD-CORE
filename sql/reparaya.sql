@@ -1,13 +1,7 @@
--- =====================================================================
--- ReparaYa - Esquema completo
--- Grupo: PHP QUAD-CORE
--- Base original: bbddReparaYa.sql proporcionada por el consultor
--- Ampliaciones documentadas:
---   * usuarios.apellidos             -> separar nombre/apellidos para perfil
---   * incidencias.franja_horaria     -> manana | tarde
---   * incidencias.telefono_contacto  -> requerido por el enunciado
---   * incidencias.fecha_actualizacion -> trazabilidad
--- =====================================================================
+-- ReparaYa - base de datos producto 2 (PHP-MVC)
+-- Grupo PHP QUAD-CORE
+-- Ampliaciones respecto a la base del consultor:
+--   usuarios.apellidos, incidencias.franja_horaria, incidencias.telefono_contacto
 
 DROP TABLE IF EXISTS incidencias;
 DROP TABLE IF EXISTS tecnicos;
@@ -15,25 +9,22 @@ DROP TABLE IF EXISTS especialidades;
 DROP TABLE IF EXISTS usuarios;
 DROP TABLE IF EXISTS gestoras;
 
--- 1. USUARIOS
 CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     apellidos VARCHAR(150) DEFAULT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL, -- password_hash() de PHP
+    password VARCHAR(255) NOT NULL,
     rol ENUM('admin', 'tecnico', 'particular', 'gestora', 'comunidad') NOT NULL DEFAULT 'particular',
     telefono VARCHAR(20),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 2. ESPECIALIDADES
 CREATE TABLE especialidades (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre_especialidad VARCHAR(50) NOT NULL UNIQUE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 3. TÉCNICOS
 CREATE TABLE tecnicos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT UNIQUE,
@@ -44,7 +35,6 @@ CREATE TABLE tecnicos (
     FOREIGN KEY (especialidad_id) REFERENCES especialidades(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 4. GESTORAS (Empresas de seguros o mantenimiento que derivan partes)
 CREATE TABLE gestoras (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL UNIQUE,
@@ -54,7 +44,6 @@ CREATE TABLE gestoras (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 5. INCIDENCIAS
 CREATE TABLE incidencias (
     id INT AUTO_INCREMENT PRIMARY KEY,
     localizador VARCHAR(16) NOT NULL UNIQUE,
@@ -79,9 +68,7 @@ CREATE TABLE incidencias (
     FOREIGN KEY (gestora_id) REFERENCES gestoras(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- =====================================================================
--- DATOS DE EJEMPLO (seeds)
--- =====================================================================
+-- Datos de prueba
 
 INSERT INTO especialidades (nombre_especialidad) VALUES
 ('Fontaneria'),
@@ -90,8 +77,7 @@ INSERT INTO especialidades (nombre_especialidad) VALUES
 ('Climatizacion'),
 ('Carpinteria');
 
--- Contraseñas de ejemplo: todas son "reparaya123"
--- Hash generado con password_hash('reparaya123', PASSWORD_DEFAULT)
+-- contraseña de todos los usuarios de prueba: reparaya123
 INSERT INTO usuarios (nombre, apellidos, email, password, rol, telefono) VALUES
 ('Admin', 'ReparaYa',     'admin@reparaya.test',   '$2y$12$Z./sS3nHOBFQFnCVzaxqEuRszsMPJ.WZkvsYaXfpVvEW8O8pd/.Fa', 'admin',      '600000001'),
 ('Carlos','Tecnico Uno',  'carlos@reparaya.test',  '$2y$12$Z./sS3nHOBFQFnCVzaxqEuRszsMPJ.WZkvsYaXfpVvEW8O8pd/.Fa', 'tecnico',    '600000002'),
@@ -122,8 +108,6 @@ INSERT INTO incidencias (localizador, cliente_id, tecnico_id, especialidad_id, d
 ('REP-2026-0009', 4, NULL, 2, 'Revision seguridad electrica',            'C/ Mayor 12, Madrid',           '600000004', DATE_ADD(NOW(), INTERVAL 10 DAY), 'tarde',  'Urgente',  'Pendiente'),
 ('REP-2026-0010', 5, 1, 3, 'Instalar nuevas cerraduras inteligentes',   'Av. Diagonal 45, Barcelona',    '600000005', DATE_SUB(NOW(), INTERVAL 1 DAY),  'manana', 'Estandar', 'Finalizada');
 
--- Incidencia gestionada por 'Seguros HogarPlus' (gestora_id = 1)
+-- Incidencia de gestora
 INSERT INTO incidencias (localizador, cliente_id, tecnico_id, especialidad_id, gestora_id, descripcion, direccion, telefono_contacto, fecha_servicio, franja_horaria, tipo_urgencia, estado) VALUES
 ('REP-2026-0011', 4, NULL, 1, 1, 'Inundación por rotura de bajante principal', 'C/ Mayor 12, Madrid', '600000004', DATE_ADD(NOW(), INTERVAL 1 DAY), 'manana', 'Urgente', 'Pendiente');
-
--- Nota: los hashes incluidos son válidos para la contraseña "reparaya123"

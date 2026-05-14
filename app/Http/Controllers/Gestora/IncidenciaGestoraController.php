@@ -61,9 +61,8 @@ class IncidenciaGestoraController extends Controller
             'estado'            => 'Pendiente',
         ]);
 
-        // Calcular comisión automáticamente
-        $importeBase = (float) $request->importe_base;
-        $porcentaje  = (float) $gestora->porcentaje_comision;
+        $importeBase     = (float) $request->importe_base;
+        $porcentaje      = (float) $gestora->porcentaje_comision;
         $importeComision = round($importeBase * $porcentaje / 100, 2);
 
         Comision::create([
