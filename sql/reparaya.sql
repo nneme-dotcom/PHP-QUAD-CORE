@@ -47,10 +47,13 @@ CREATE TABLE tecnicos (
 CREATE TABLE gestoras (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL UNIQUE,
+    cif VARCHAR(20) DEFAULT NULL,
     email VARCHAR(100) DEFAULT NULL,
     telefono VARCHAR(20) DEFAULT NULL,
-    comision_acumulada DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    porcentaje_comision DECIMAL(5,2) NOT NULL DEFAULT 10.00,
+    usuario_id INT DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE incidencias (
@@ -128,10 +131,10 @@ INSERT INTO tecnicos (usuario_id, nombre_completo, especialidad_id, disponible) 
 (2, 'Carlos Tecnico Uno', 1, TRUE),
 (3, 'Lucia Tecnica Dos',  2, TRUE);
 
-INSERT INTO gestoras (nombre, email, telefono, comision_acumulada) VALUES
-('Seguros HogarPlus', 'hogar@mail.com', '600000001', 100.00),
-('Mantenimientos Express', 'mantenimiento@mail.com', '600000002', 200.00),
-('Asistencia Global', 'asistencia@mail.com', '600000003', 300.00);
+INSERT INTO gestoras (nombre, cif, email, telefono, porcentaje_comision, usuario_id) VALUES
+('Seguros HogarPlus',     'B12345678', 'hogar@mail.com',          '600000001', 10.00, 6),
+('Mantenimientos Express','B87654321', 'mantenimiento@mail.com',   '600000002', 8.00,  NULL),
+('Asistencia Global',     'B11223344', 'asistencia@mail.com',      '600000003', 12.00, NULL);
 
 INSERT INTO incidencias (localizador, cliente_id, tecnico_id, especialidad_id, descripcion, direccion, telefono_contacto, fecha_servicio, franja_horaria, tipo_urgencia, estado) VALUES
 ('REP-2026-0001', 4, 1, 1, 'Fuga en el grifo de la cocina',              'C/ Mayor 12, Madrid',           '600000004', DATE_ADD(NOW(), INTERVAL 3 DAY),  'manana', 'Estandar', 'Asignada'),
